@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: WalletApp
+  liquibase:
+    change-log: db/changelog/changelog.yaml
+    enabled: true
+    liquibase-schema: wallet_app
+  datasource:
+    username: ${DB_USERNAME:*}
+    password: ${DB_PASSWORD:*}
+    url: ${DB_URL:*}
