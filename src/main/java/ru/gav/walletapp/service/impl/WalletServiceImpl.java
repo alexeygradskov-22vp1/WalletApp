@@ -1,15 +1,19 @@
 package ru.gav.walletapp.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.reactive.TransactionalOperator;
+import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Mono;
 import ru.gav.walletapp.dto.WalletDto;
 import ru.gav.walletapp.dto.WalletOperationDto;
 import ru.gav.walletapp.entity.enums.OperationType;
 import ru.gav.walletapp.entity.Wallet;
 import ru.gav.walletapp.entity.WalletOperation;
+import ru.gav.walletapp.exception.BalanceException;
+import ru.gav.walletapp.exception.WalletNotFoundException;
 import ru.gav.walletapp.exception.supplier.ExceptionSupplier;
 import ru.gav.walletapp.mapper.WalletMapper;
 import ru.gav.walletapp.mapper.WalletOperationMapper;
