@@ -7,7 +7,7 @@ import org.springframework.transaction.reactive.TransactionalOperator;
 import reactor.core.publisher.Mono;
 import ru.gav.walletapp.dto.WalletDto;
 import ru.gav.walletapp.dto.WalletOperationDto;
-import ru.gav.walletapp.entity.OperationType;
+import ru.gav.walletapp.entity.enums.OperationType;
 import ru.gav.walletapp.entity.Wallet;
 import ru.gav.walletapp.entity.WalletOperation;
 import ru.gav.walletapp.exception.supplier.ExceptionSupplier;
@@ -31,11 +31,21 @@ public class WalletServiceImpl implements WalletService {
     private final ExceptionSupplier exceptionSupplier;
     private final TransactionalOperator transactionalOperator;
 
+    /**
+     * Возвращает счёт по его айди
+     * @param walletId айди счёта
+     * @return счёт
+     */
+
     @Override
     public Mono<WalletDto> getWallet(UUID walletId) {
         return walletRepository.findById(walletId).map(walletMapper::mapEntityToDto);
     }
 
+    /**
+     * Создание счёта
+     * @return созданный счёт
+     */
     @Override
     public Mono<WalletDto> postWallet() {
         Wallet wallet = Wallet
@@ -44,6 +54,17 @@ public class WalletServiceImpl implements WalletService {
         return walletRepository.save(wallet).map(walletMapper::mapEntityToDto);
     }
 
+    /**
+     * Добавляет операцию с кошельком
+     * 1. Ищет счёт
+     * 2. Сохраняет операцию в БД
+     * 3. Если итоговый баланс меньше нуля, то происходит откат транзакции
+     * 4. Сохраняет счёт кошелька в БД
+     * 5. Возвращает счёт с обновленным балансом
+     *
+     * @param walletOperationDto операция с балансом счёта
+     * @return счёт
+     */
     @Override
     @Transactional
     public Mono<WalletDto> postWalletOperation(WalletOperationDto walletOperationDto) {
@@ -77,6 +98,12 @@ public class WalletServiceImpl implements WalletService {
                 .map(walletMapper::mapEntityToDto);
     }
 
+    /**
+     * Обновляет баланс счёта
+     * @param walletId айди счёта
+     * @param balance новый баланс счёта
+     * @return счёт
+     */
     private Mono<Wallet> updateBalance(UUID walletId, BigDecimal balance) {
         return walletRepository
                 .findById(walletId)

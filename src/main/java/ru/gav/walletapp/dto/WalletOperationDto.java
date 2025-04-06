@@ -1,7 +1,7 @@
 package ru.gav.walletapp.dto;
 
 import lombok.Value;
-import ru.gav.walletapp.entity.OperationType;
+import ru.gav.walletapp.entity.enums.OperationType;
 
 import java.math.BigDecimal;
 import java.util.UUID;
