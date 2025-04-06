@@ -1,13 +1,14 @@
 services:
   service:
-    image: wallet-app:latest
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     restart: "no"
     ports:
       - "8080:8080"
     environment:
       DB_PASSWORD: ${DB_PASSWORD}
-      DB_URL: jdbc:postgresql://db:5432/${DB_NAME}
+      DB_URL: db:5432/${DB_NAME}
       DB_USERNAME: ${DB_USERNAME}
 
   db:

@@ -5,7 +5,9 @@ spring:
     change-log: db/changelog/changelog.yaml
     enabled: true
     liquibase-schema: wallet_app
-  datasource:
-    username: ${DB_USERNAME:*}
-    password: ${DB_PASSWORD:*}
-    url: ${DB_URL:*}
+  r2dbc:
+    password: ${DB_USERNAME:*}
+    username: ${DB_PASSWORD:*}
+    url: r2dbc:postgresql://${DB_URL:*}
+
+
